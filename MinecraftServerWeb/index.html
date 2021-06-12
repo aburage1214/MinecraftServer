@@ -37,23 +37,7 @@
         ajax.open('GET','https://ms2.aburage.mydns.jp/result.json');
         ajax.responseType='json';
         ajax.send(null);
-        ajax.onreadystatechange = getAjaxState()
-
-        function getTimer(){
-            var time = document.getElementById("timer");
-
-            var now = new Date();
-            var Year = now.getFullYear();
-            var Month = now.getMonth()+1;
-            var Day = now.getDate();
-            var Hour = now.getHours();
-            var Min = now.getMinutes();
-            var Sec = now.getSeconds();
-
-            time.innerHTML=Year+"/"+Month+"/"+Day+" "+Hour+":"+Min+":"+Sec;
-        }
-
-        function getAjaxState(){
+        ajax.onreadystatechange = function (){
             if(ajax.readyState === XMLHttpRequest.DONE && ajax.status === 200){
                 document.getElementById("result_unit").innerHTML = '稼働中';
             }else{
@@ -69,6 +53,20 @@
             //         timer:"0",
             //     }
             // })
+        }
+
+        function getTimer(){
+            var time = document.getElementById("timer");
+
+            var now = new Date();
+            var Year = now.getFullYear();
+            var Month = now.getMonth()+1;
+            var Day = now.getDate();
+            var Hour = now.getHours();
+            var Min = now.getMinutes();
+            var Sec = now.getSeconds();
+
+            time.innerHTML=Year+"/"+Month+"/"+Day+" "+Hour+":"+Min+":"+Sec;
         }
 
         function btnUpdate(){
