@@ -23,45 +23,56 @@
 
         <div id="main_content">
             <p>Minecraftサーバー(ms2.aburage.mydns.jp)</p>
-            <p>{{"稼働状況："+result_unit}}</p>
-            <!-- 稼働状況：<p id="result_unit"></p> -->
-            <p>{{"最終更新："+timer}}</p>
-            <p>{{$data}}</p>
-            <p id="test"></p>
+            <p>稼働状況：<nobr id="result_unit"></nobr></p>
+            <p>最終更新：<nobr id ="timer"></nobr></p>
+            <!-- <p>{{$data}}</p> -->
+            <input type="button" value="更新" onclick="btnUpdate()"/>
         </div>
-        <script>
-            var ajax = new XMLHttpRequest();
-            ajax.open('GET','https://ms2.aburage.mydns.jp/result.json');
-            ajax.responseType='json';
-            ajax.send(null);
+    
+        <script src="./script.js"></script>
+    </body>
 
-            var objResult = "";
-            // {rst:"ほげほげ"};
-        
-            ajax.onreadystatechange = function(){
-                if(ajax.readyState === XMLHttpRequest.DONE && ajax.status === 200){
-                    // document.getElementById("test").innerHTML = '稼働中';
-                    objResult = "稼働中";
-                }else{
-                    // document.getElementById("test").innerHTML = '休止中';
-                    objResult = "休止中";
-                }
+    <script>
+        var ajax = new XMLHttpRequest();
+        ajax.open('GET','https://ms2.aburage.mydns.jp/result.json');
+        ajax.responseType='json';
+        ajax.send(null);
+        ajax.onreadystatechange = getAjaxState()
+
+        function getTimer(){
+            var time = document.getElementById("timer");
+
+            var now = new Date();
+            var Year = now.getFullYear();
+            var Month = now.getMonth()+1;
+            var Day = now.getDate();
+            var Hour = now.getHours();
+            var Min = now.getMinutes();
+            var Sec = now.getSeconds();
+
+            time.innerHTML=Year+"/"+Month+"/"+Day+" "+Hour+":"+Min+":"+Sec;
+        }
+
+        function getAjaxState(){
+            if(ajax.readyState === XMLHttpRequest.DONE && ajax.status === 200){
+                document.getElementById("result_unit").innerHTML = '稼働中';
+            }else{
+                document.getElementById("result_unit").innerHTML = '休止中';
             }
 
-            // if(ajax.readyState === XMLHttpRequest.DONE && ajax.status === 200){
-            //         objResult = "稼働中";
-            //     }else{
-            //         objResult = "休止中";
+            getTimer();
+            
+            // //Vueインスタンス
+            //     new Vue({
+            //     el:"#main_content",
+            //     data:{
+            //         timer:"0",
             //     }
-        
-            new Vue({
-                el:"#main_content",
-                data:{
-                    timer:"0",
-                    result_unit:objResult
-                }
-            })
+            // })
+        }
 
-        </script>
-        </body>
+        function btnUpdate(){
+            getTimer();
+        }
+    </script>
 </html>
